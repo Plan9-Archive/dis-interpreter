@@ -1,0 +1,4 @@
+Hello: module
+{
+	init: fn();
+};

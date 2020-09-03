@@ -1,0 +1,77 @@
+</$objtype/mkfile
+
+TARG=dis
+COMP=386
+systype=Plan9
+DL=Plan9
+
+INTERPFILES=\
+	alt.$O\
+	comp-$COMP.$O\
+	das-$COMP.$O\
+	dec.$O\
+	fmt.$O\
+	gc.$O\
+	heap.$O\
+	link.$O\
+	load.$O\
+	loader.$O\
+	raise.$O\
+	readmod.$O\
+	runt.$O\
+	sign.$O\
+	stack.$O\
+	string.$O\
+	validstk.$O\
+	xec.$O\
+
+EMUFILES=\
+	alloc.$O\
+	devprog.$O\
+	dis.$O\
+	error.$O\
+	exception.$O\
+	proc.$O\
+
+HFILES=\
+	interp.h\
+	isa.h\
+	lib9.h\
+	raise.h\
+	tab.h\
+
+OFILES=\
+	$EMUFILES\
+	$INTERPFILES\
+	$systype.$O\
+	asm-$systype-$objtype.$O\
+	dl-$DL.$O\
+	dynsyms.$O\
+	kernel.$O\
+	main.$O\
+
+</sys/src/cmd/mkone
+
+xec.$O:	optab.h pool.h
+
+runt.$O:	sysmod.h
+
+link.$O:	kernel.h
+load.$O:	kernel.h
+loader.$O:	loadermod.h kernel.h
+readmod.$O:	kernel.h
+
+optab.h:	isa.h mkoptab
+	rc mkoptab >$target
+
+#	Do not remove optab.h, because the script that builds
+#	it works only on UNIX and Plan 9.
+
+$EMUFILES:	dat.h fns.h error.h
+
+mymod.out:	mymod.$O
+	8l -u shared.syms -E dismodinit -o mymod.out mymod.$O
+
+dynsyms.c:	shared.syms
+	mkdynsyms shared.syms >$target
+

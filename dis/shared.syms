@@ -1,0 +1,11 @@
+acquire
+release
+malloc
+mallocz
+msize
+realloc
+dtype
+runtime
+print
+freeheap
+strcpy
